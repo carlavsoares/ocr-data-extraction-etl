@@ -1,0 +1,9 @@
+pandas
+openpyxl
+img2table
+paddleocr
+paddlepaddle
+pdf2image
+Pillow
+opencv-python
+numpy
