@@ -33,3 +33,17 @@ Validação dos dados
 ↓
 Exportação para Excel
 ```
+
+## Status do projeto
+
+Em desenvolvimento.
+
+Etapas planejadas:
+
+* [X] Definição da arquitetura ETL
+* [X] Criação de documentos fictícios para teste
+* [X] Extração de tabelas com OCR
+* [ ] Tratamento dos DataFrames com pandas
+* [ ] Validação automática de colunas
+* [ ] Exportação estruturada para Excel
+* [ ] Documentação completa do fluxo

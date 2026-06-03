@@ -7,6 +7,8 @@ The extracted tables are then structured into a format suitable for further anal
 '''
 
 import gc
+from pathlib import Path
+
 import pandas as pd
 from img2table.document import PDF
 from img2table.ocr import PaddleOCR
@@ -18,7 +20,10 @@ def extract_tables_from_pdf(
         language: str = 'pt',
         min_confidence: int = 50,
         
-): 
+) -> tuple[list[tuple[str, pd.DataFrame]], list[dict]]: 
+# return type hint for a tuple containing a list of tuples (sheet name and DataFrame) 
+# and a list of dictionaries (diagnostics)
+
     '''
     Extract tables from a scanned PDF file.
     
@@ -34,10 +39,22 @@ def extract_tables_from_pdf(
         - diagnostics: list of dictionaries with extraction metadata.
     '''
     
-    ocr_engine = PaddleOCR(lang=language)
+    pdf_file = Path(pdf_path)
+
+    if not pdf_file.exists():
+        raise FileNotFoundError(f"PDF file not found: {pdf_path}")
+    
+    if total_pages is None or total_pages <= 0:
+        raise ValueError("total_pages must be a positive integer.")
 
     extracted_tables: list[tuple[str, pd.DataFrame]] = []  # List to store extracted tables as tuples of (sheet_name, DataFrame)
     diagnostics: list[dict] = []  # List to store diagnostics information for each page
+
+    try:
+        ocr_engine = PaddleOCR(lang=language)
+
+    except Exception as error:
+        raise RuntimeError(f"Failed to initialize OCR engine: {error}") from error
 
     # loop through each page of the PDF and extract tables
     for page_index in range(total_pages):
@@ -48,7 +65,7 @@ def extract_tables_from_pdf(
 
         try:
             pdf = PDF(
-                scr = pdf_path,
+                src = pdf_path,
                 pages = [page_index],
                 detect_rotation = True,
                 pdf_text_extraction = False,
