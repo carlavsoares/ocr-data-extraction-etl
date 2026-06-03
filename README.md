@@ -43,7 +43,7 @@ Etapas planejadas:
 * [X] Definição da arquitetura ETL
 * [X] Criação de documentos fictícios para teste
 * [X] Extração de tabelas com OCR
-* [ ] Tratamento dos DataFrames com pandas
-* [ ] Validação automática de colunas
-* [ ] Exportação estruturada para Excel
-* [ ] Documentação completa do fluxo
+* [X] Tratamento dos DataFrames com pandas
+* [X] Validação automática de colunas
+* [X] Exportação estruturada para Excel
+* [X] Documentação completa do fluxo
