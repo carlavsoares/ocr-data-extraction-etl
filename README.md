@@ -44,6 +44,6 @@ Etapas planejadas:
 * [X] Criação de documentos fictícios para teste
 * [X] Extração de tabelas com OCR
 * [X] Tratamento dos DataFrames com pandas
-* [X] Validação automática de colunas
-* [X] Exportação estruturada para Excel
-* [X] Documentação completa do fluxo
+* [ ] Validação automática de colunas
+* [ ] Exportação estruturada para Excel
+* [ ] Documentação completa do fluxo

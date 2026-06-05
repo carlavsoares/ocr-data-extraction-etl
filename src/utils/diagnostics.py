@@ -20,11 +20,13 @@ def print_extraction_summary(diagnostics: list[dict]) -> None:
             status = item.get("status", "unknown")
             error = item.get("error")
 
-            print(f'- Page/Fele {page_or_file}:')
-            print(f'{tables_found} table(s) found | status: {status}')
+            print(
+                f"- Page/File {page_or_file}: "
+                f"{tables_found} table(s) found | status: {status}"
+            )
 
             if error:
-                print(f'    Error:{error}')
+                print(f'    Error: {error}')
             
         except AttributeError:
             print( '- Invalid diagnostic item found.')

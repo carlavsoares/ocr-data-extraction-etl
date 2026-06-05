@@ -21,7 +21,7 @@ def normalize_text(text: object) -> str:
     except TypeError:
         pass    
 
-    text = str(text).strip.lower()
+    text = str(text).strip().lower()
 
     text = unicodedata.normalize('NFKD', text)
     text = ''.join(

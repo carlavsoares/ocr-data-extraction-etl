@@ -9,11 +9,19 @@ Flow:
 '''
 
 from src.extraction.pdf_extractor import extract_tables_from_pdf
+from src.export.excel_exporter import export_tables_to_excel
 from src.transform.cleaning import clean_table
 from src.transform.normalization import normalize_column_names
 from src.transform.validation import validate_minimum_columns, validate_table_not_empty
 from src.utils.diagnostics import print_extraction_summary
-from src.export.excel_exporter import export_tables_to_excel
+
+
+PROCESSING_MODE = 'raw'
+
+# Options:
+# 'raw'       -> export tables exaxtly as extracted by OCR
+# 'processed' -> clean, normalize, validate and export final result
+
 
 def main() -> None:
     '''
@@ -23,27 +31,38 @@ def main() -> None:
     print("Starting OCR Data Extraction ETL Pipeline...")
 
     # Define path
-    input_file = "ocr-data-extraction-etl/data/input/scanned_document.pdf"
-    output_file = "ocr-data-extraction-etl/data/output/extracted_data.xlsx"
-    total_pages = 10 
+    input_file = "data/input/scanned_document.pdf"
+    total_pages = 10
+    
+    '''raw_output_file = "data/output/raw_extracted_tables.xlsx"
+    processed_output_file = 'data/output/processed_tables.xlsx'
+    '''
 
     try:
         
-        print(f'Input file: {input_file}')
-        print(f'Output file: {output_file}')
+        #print(f'Input file: {input_file}')
+        #print(f'Output file: {output_file}')
 
         # 1. Extraction
         # TODO:  call OCR extraction function
         extracted_tables, diagnostics = extract_tables_from_pdf(
             pdf_path = input_file,
-            total_pages = total_pages,
+            total_pages = total_pages
         )
 
         print_extraction_summary(diagnostics)
 
+        # Preview raw extracted tables before transformation
+        for sheet_name, raw_df in extracted_tables:
+            print('\n' + '=' * 80)
+            print(f'RAW TABLE: {sheet_name}')
+            print('=' * 80)
+
+            print(raw_df.head(20).to_string())
+
         # 2. Transformation
         # TODO: call cleaning and standardization functions
-        transformed_tables = []
+        '''transformed_tables = []
 
         for sheet_name, raw_df in extracted_tables:
             cleaned_df = clean_table(raw_df)
@@ -88,7 +107,7 @@ def main() -> None:
         # export_to_excel(transformed_tables, diagnostic, output_file)
 
         print('Pipeline finished.')
-
+'''
     except FileNotFoundError as error:
         print(f"File not found: {error}")
     
@@ -104,5 +123,5 @@ def main() -> None:
     except Exception as error:
         print(f"An unexpected error occurred: {error}")
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()

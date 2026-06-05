@@ -2,7 +2,7 @@
 PDF table extraction module.
 
 This module extracts tables from scanned PDF files using OCR (Optical Character Recognition) techniques. 
-It utilizes libraries such as PyPDF2 for PDF processing and Tesseract OCR for text extraction. 
+It utilizes libraries such as PyPDF2 for PDF processing and Tesseract OCR for text extraction.
 The extracted tables are then structured into a format suitable for further analysis or storage.    
 '''
 
@@ -13,14 +13,15 @@ import pandas as pd
 from img2table.document import PDF
 from img2table.ocr import PaddleOCR
 
+
 # extract tables from a scanned PDF file
 def extract_tables_from_pdf(
         pdf_path: str,
-        total_pages: int = None,
+        total_pages: int,
         language: str = 'pt',
-        min_confidence: int = 50,
+        min_confidence: int = 50
         
-) -> tuple[list[tuple[str, pd.DataFrame]], list[dict]]: 
+):
 # return type hint for a tuple containing a list of tuples (sheet name and DataFrame) 
 # and a list of dictionaries (diagnostics)
 
@@ -29,13 +30,13 @@ def extract_tables_from_pdf(
     
     Args:
         pdf_path: Path to the input PDF file.
-        total_pages: The total number of pages to process.
+        total_pages: Total number of pages to process.
         language: OCR language. 
-        min_confidence: Minimum OCR results confidence score to consider a table valid.
+        min_confidence: Minimum OCR results confidence score.
 
     Returns:
     A tuple containing:
-        - extracted_tables: list of tuples with sheet name and DataFrame of the extracted tables.
+        - extracted_tables: list of tuples with sheet name and DataFrame.
         - diagnostics: list of dictionaries with extraction metadata.
     '''
     
@@ -68,7 +69,7 @@ def extract_tables_from_pdf(
                 src = pdf_path,
                 pages = [page_index],
                 detect_rotation = True,
-                pdf_text_extraction = False,
+                pdf_text_extraction = False
             )
 
             tables = pdf.extract_tables(
@@ -77,7 +78,7 @@ def extract_tables_from_pdf(
                 implicit_columns = True,
                 borderless_tables = True,
                 min_confidence=min_confidence,
-                max_workers=1,
+                max_workers=1
             )   
             
             total_tables = sum(len(table_list) for table_list in tables.values())
@@ -86,8 +87,8 @@ def extract_tables_from_pdf(
                 {
                 'page': page_index + 1,
                 'status': 'success',
-                'tables_found': len(total_tables),
-                'error': None,
+                'tables_found': total_tables,
+                'error': None
                 }
             )  
             
@@ -110,7 +111,7 @@ def extract_tables_from_pdf(
                 'page': page_index + 1,
                 'status': 'error',
                 'tables_found': 0,
-                'error': str(error),
+                'error': str(error)
                 }
             )
         finally:
